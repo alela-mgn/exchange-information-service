@@ -16,6 +16,7 @@ databaseChangeLog:
                   name: secid
                   type: varchar(51)
                   constraints:
+                    unique: true
                     nullable: false
               - column:
                   name: regnumber
@@ -32,3 +33,41 @@ databaseChangeLog:
                   type: varchar(765)
                   constraints:
                     nullable: false
+
+  - changeSet:
+      id: EIS-2 add liquibase migration
+      author: Vladislav S.
+      changes:
+        - createTable:
+            tableName: histories
+            columns:
+              - column:
+                  name: secid
+                  type: varchar(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: trade_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: numtrades
+                  type: float4
+                  constraints:
+                    nullable: false
+              - column:
+                  name: open
+                  type: float4
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseColumnNames: secid
+            baseTableName: histories
+            constraintName: fk_trade_history_security
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: secid
+            referencedTableName: securities
+            validate: true
