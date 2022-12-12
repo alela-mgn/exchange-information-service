@@ -1,5 +1,6 @@
 package com.exchange.information.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -29,6 +30,7 @@ public class Security {
     private String name;
 
     @Column(nullable = false, length = 765, name = "emitent_title")
+    @JsonProperty("emitent_title")
     private String emitentTitle;
 
     @Override
