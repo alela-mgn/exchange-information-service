@@ -20,6 +20,10 @@ public class XmlParser {
         return (SecurityFileModel) parse(fileContent, SecurityFileModel.class);
     }
 
+    public TradeHistoryFileModel parseTradeHistoryModel(String fileContent) {
+        return (TradeHistoryFileModel) parse(fileContent, TradeHistoryFileModel.class);
+    }
+
     private Object parse(String fileContent, Class<?> clazz) {
         try {
             return xmlMapper.readValue(fileContent, clazz);
