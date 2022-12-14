@@ -7,17 +7,16 @@ databaseChangeLog:
             tableName: securities
             columns:
               - column:
-                  name: id
-                  type: bigint
+                  name: secid
+                  type: varchar(51)
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: secid
-                  type: varchar(51)
+                  name: id
+                  type: bigint
                   constraints:
                     unique: true
-                    nullable: false
               - column:
                   name: regnumber
                   type: varchar(189)
@@ -26,13 +25,9 @@ databaseChangeLog:
               - column:
                   name: name
                   type: varchar(765)
-                  constraints:
-                    nullable: false
               - column:
                   name: emitent_title
                   type: varchar(765)
-                  constraints:
-                    nullable: false
 
   - changeSet:
       id: EIS-2 add liquibase migration
@@ -45,7 +40,6 @@ databaseChangeLog:
                   name: secid
                   type: varchar(36)
                   constraints:
-                    primaryKey: true
                     nullable: false
               - column:
                   name: trade_date
@@ -60,8 +54,12 @@ databaseChangeLog:
               - column:
                   name: open
                   type: float4
-                  constraints:
-                    nullable: false
+        - addPrimaryKey:
+            clustered: true
+            columnNames: secid, trade_date
+            constraintName: pk_history
+            tableName: histories
+            validate: true
         - addForeignKeyConstraint:
             baseColumnNames: secid
             baseTableName: histories
@@ -71,3 +69,14 @@ databaseChangeLog:
             referencedColumnNames: secid
             referencedTableName: securities
             validate: true
+
+  - changeSet:
+      id: addColumn close
+      author: Vladislav S.
+      changes:
+        - addColumn:
+            tableName: histories
+            columns:
+              - column:
+                  name: close
+                  type: float4

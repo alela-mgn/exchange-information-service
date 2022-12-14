@@ -3,6 +3,7 @@ package com.exchange.information.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,12 +15,13 @@ import java.util.Objects;
 @Table(name = "securities")
 @RequiredArgsConstructor
 @Getter
+@Setter
 public class Security {
 
-    @Id
     @Column(name = "id")
     private Long id;
 
+    @Id
     @Column(nullable = false, length = 51, name = "secid")
     private String secid;
 
@@ -38,7 +40,10 @@ public class Security {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Security security = (Security) o;
-        return Objects.equals(secid, security.secid) && Objects.equals(regnumber, security.regnumber) && Objects.equals(name, security.name) && Objects.equals(emitentTitle, security.emitentTitle);
+        return Objects.equals(secid, security.secid)
+                && Objects.equals(regnumber, security.regnumber)
+                && Objects.equals(name, security.name)
+                && Objects.equals(emitentTitle, security.emitentTitle);
     }
 
     @Override

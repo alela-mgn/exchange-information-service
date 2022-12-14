@@ -1,7 +1,8 @@
 package com.exchange.information.controller;
 
 import com.exchange.information.model.Security;
-import com.exchange.information.service.ParseService;
+import com.exchange.information.model.TradeHistory;
+import com.exchange.information.service.ImportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +16,15 @@ import java.util.List;
 @RequestMapping("/api/import/")
 @RequiredArgsConstructor
 public class ImportController {
-    private final ParseService parseService;
+    private final ImportService service;
 
     @PostMapping("securities")
     public List<Security> importSecurities(@RequestParam("file") MultipartFile file) {
-        return parseService.parseSecurityXmlFile(file);
+        return service.parseSecurityXmlFile(file);
+    }
+
+    @PostMapping("histories")
+    public List<TradeHistory> importTradeHistory(@RequestParam("file") MultipartFile file) {
+        return service.parseTradeHistoryXmlFile(file);
     }
 }
