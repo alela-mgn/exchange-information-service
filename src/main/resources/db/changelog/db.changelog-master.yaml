@@ -1,0 +1,82 @@
+databaseChangeLog:
+  - changeSet:
+      id: EIS-1 add liquibase migration
+      author: Vladislav S.
+      changes:
+        - createTable:
+            tableName: securities
+            columns:
+              - column:
+                  name: secid
+                  type: varchar(51)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    unique: true
+              - column:
+                  name: regnumber
+                  type: varchar(189)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(765)
+              - column:
+                  name: emitent_title
+                  type: varchar(765)
+
+  - changeSet:
+      id: EIS-2 add liquibase migration
+      author: Vladislav S.
+      changes:
+        - createTable:
+            tableName: histories
+            columns:
+              - column:
+                  name: secid
+                  type: varchar(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: trade_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: numtrades
+                  type: float4
+                  constraints:
+                    nullable: false
+              - column:
+                  name: open
+                  type: float4
+        - addPrimaryKey:
+            clustered: true
+            columnNames: secid, trade_date
+            constraintName: pk_history
+            tableName: histories
+            validate: true
+        - addForeignKeyConstraint:
+            baseColumnNames: secid
+            baseTableName: histories
+            constraintName: fk_trade_history_security
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: secid
+            referencedTableName: securities
+            validate: true
+
+  - changeSet:
+      id: addColumn close
+      author: Vladislav S.
+      changes:
+        - addColumn:
+            tableName: histories
+            columns:
+              - column:
+                  name: close
+                  type: float4
