@@ -1,5 +1,6 @@
 package com.exchange.information.controller;
 
+import com.exchange.information.dto.DetailedHistory;
 import com.exchange.information.model.TradeHistory;
 import com.exchange.information.service.TradeHistoryService;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +43,10 @@ public class TradeHistoryController {
     @PutMapping("/update/{secId}")
     public TradeHistory update(@PathVariable String secId, @RequestBody TradeHistory history) {
         return service.update(secId, history);
+    }
+
+    @GetMapping("/detailed-info")
+    public List<DetailedHistory> getDetailedInfo() {
+        return service.getDetailedHistory();
     }
 }

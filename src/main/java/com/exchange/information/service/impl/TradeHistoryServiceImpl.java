@@ -1,5 +1,7 @@
 package com.exchange.information.service.impl;
 
+import com.exchange.information.dto.DetailedHistory;
+import com.exchange.information.mapper.DetailedHistoryMapper;
 import com.exchange.information.model.TradeHistory;
 import com.exchange.information.repository.TradeHistoryRepository;
 import com.exchange.information.service.TradeHistoryService;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -52,5 +55,14 @@ public class TradeHistoryServiceImpl implements TradeHistoryService {
     @Override
     public void delete(String id) {
         repository.deleteAll(repository.findAllByHistoryId_Secid(id));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<DetailedHistory> getDetailedHistory() {
+        DetailedHistoryMapper mapper = new DetailedHistoryMapper();
+        List<TradeHistory> tradeHistoryList = repository.findAll();
+
+        return tradeHistoryList.stream().map(mapper::toDetailedHistory).collect(Collectors.toList());
     }
 }
